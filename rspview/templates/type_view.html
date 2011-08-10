@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}RestPose viewer{% endblock %}
+
+{% macro showtype(fieldname, params, count) %}
+<li>{{ fieldname }} ({{count}} documents)
+<ul>
+{% for k, v in params.items() %}
+<li>{{ k }}: {{ v }}</li>
+{% endfor %}
+</ul>
+</li>
+{% endmacro %}
+
+{% block content %}
+
+<h1>Type {{ type_name }} in collection <a href="{{ url_for('coll_view', coll_name=coll.name) }}">{{ coll.name }}</a> <a href="{{ url_for('type_docs_list', coll_name=coll.name, type_name=type_name) }}">({{ type_count }} documents)</a></h1>
+
+<h2>Fields</h2>
+<ul>
+{% for fieldname, params, count in fields %}
+{{ showtype(fieldname, params, count) }}
+{% endfor %}
+</ul>
+
+<h2>Special Fields</h2>
+<ul>
+{% for fieldname, params, count in special_fields %}
+{{ showtype(fieldname, params, count) }}
+{% endfor %}
+</ul>
+
+
+<h2>Patterns</h2>
+<ul>
+{% for pattern in type.patterns %}
+<li>{{ pattern }}</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

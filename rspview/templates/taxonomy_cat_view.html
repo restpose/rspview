@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}RestPose viewer{% endblock %}
+
+{% macro showcat(name, ids) %}
+{% if ids %}
+<h2>{{ name }}</h2>
+<ul>
+{% for catid in ids %}
+<li><a href="{{ url_for('taxonomy_cat_view', coll_name=coll.name, taxonomy_name=taxonomy.name, catid=catid) }}">{{ catid }}</a>
+{% endfor %}
+</ul>
+{% endif %}
+{% endmacro %}
+
+{% block content %}
+<h1>Category {{ catid }} in taxonomy {{ taxonomy.name }} in {{ coll.name }}</h1>
+
+{{ showcat('Parents', cat.parents) }}
+{{ showcat('Children', cat.children) }}
+{{ showcat('Ancestors', cat.ancestors) }}
+{{ showcat('Descendants', cat.descendants) }}
+
+{% endblock %}

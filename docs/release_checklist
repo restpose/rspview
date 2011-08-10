@@ -1,0 +1,4 @@
+Release Checklist
+=================
+
+ - update version numbers in requirements.txt, rspview/__init__.py and setup.py

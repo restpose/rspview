@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}RestPose viewer{% endblock %}
+
+{% block content %}
+
+<h1>Collection {{ coll.name }} <a href="{{ url_for('docs_list', coll_name=coll.name) }}">({{ doc_count }} documents)</a></h1>
+
+{% set typenames = collconfig.types.keys() %}
+{% if typenames %}
+<ul>
+{% for type in typenames %}
+<li><a href="{{ url_for('type_view', coll_name=coll.name, type_name=type) }}">{{ type }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+{% endif %}
+
+{% if taxonomies %}
+Taxonomies:
+<ul>
+{% for taxonomy in taxonomies %}
+<li><a href="{{ url_for('taxonomy_view', coll_name=coll.name, taxonomy_name=taxonomy) }}">{{ taxonomy }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}

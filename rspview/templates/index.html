@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}RestPose viewer{% endblock %}
+
+{% block content %}
+<ul>
+<li><a href="{{ url_for('coll_list') }}">Browse collections</a></li>
+</ul>
+
+<small>RestPose viewer version {{ version }}</small>
+{% endblock %}

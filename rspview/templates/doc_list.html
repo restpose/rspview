@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}RestPose viewer{% endblock %}
+
+{% block content %}
+
+<h1>Searched <a href="{{ url_for('coll_view', coll_name=coll.name) }}">{{ coll.name }}</a></h1>
+{{ page.docs.matches_estimated }} documents found when searching for "{{ search_desc }}".
+
+<ol>
+{% for doc in page.docs %}
+<li>
+{{ doc.rank + 1 }}{{ doc.data }}
+</li>
+{% endfor %}
+</ol>
+
+Page: 
+{% for num in page.pagenums %}
+{% if num == page.pagenum %}
+{{ num }}
+{% else %}
+<a href="{{ url_for_page(num) }}">{{ num }}</a>
+{% endif %}
+{% endfor %}
+
+{% endblock %}

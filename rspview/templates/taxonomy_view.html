@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}RestPose viewer{% endblock %}
+
+{% block content %}
+<h1>Taxonomy {{ taxonomy.name }} in {{ coll.name }}</h1>
+
+<ul>
+{% for catid, info in taxonomy.top().items() %}
+<li><a href="{{ url_for('taxonomy_cat_view', coll_name=coll.name, taxonomy_name=taxonomy.name, catid=catid) }}">{{ catid }}</a>
+{%- if info.child_count %}: {{ info.child_count }} children, {% endif %}
+{% if info.descendant_count %}{{ info.descendant_count }} descendants{% endif %}
+</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
