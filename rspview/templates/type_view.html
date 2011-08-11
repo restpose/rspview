@@ -2,8 +2,8 @@
 
 {% block title %}RestPose viewer{% endblock %}
 
-{% macro showtype(fieldname, params, count) %}
-<li>{{ fieldname }} ({{count}} documents)
+{% macro showtype(fieldname, params, count, doclink) %}
+<li>{{ fieldname }}{% if doclink %} <a href="{{ url_for('search_view', coll_name=coll.name, type_name=type_name, field_exists=fieldname) }}">({{count}} documents)</a>{% endif %}
 <ul>
 {% for k, v in params.items() %}
 <li>{{ k }}: {{ v }}</li>
@@ -19,14 +19,14 @@
 <h2>Fields</h2>
 <ul>
 {% for fieldname, params, count in fields %}
-{{ showtype(fieldname, params, count) }}
+{{ showtype(fieldname, params, count, True) }}
 {% endfor %}
 </ul>
 
 <h2>Special Fields</h2>
 <ul>
 {% for fieldname, params, count in special_fields %}
-{{ showtype(fieldname, params, count) }}
+{{ showtype(fieldname, params, count, False) }}
 {% endfor %}
 </ul>
 

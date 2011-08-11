@@ -7,7 +7,7 @@
 
 """
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import restpose
 from . import pagination
 from . import search
@@ -91,6 +91,35 @@ def type_docs_list(coll_name, type_name, page):
     coll = server.collection(coll_name)
     return search.do_search(coll, coll.doc_type(type_name).all(),
                             "Documents of type \'%s\'" % type_name, page)
+
+@app.route('/coll/<coll_name>/search', defaults=dict(type_name='', page=1))
+@app.route('/coll/<coll_name>/search/page/<int:page>', defaults=dict(type_name=''))
+@app.route('/coll/<coll_name>/type/<type_name>/search', defaults=dict(page=1))
+@app.route('/coll/<coll_name>/type/<type_name>/search/page/<int:page>')
+def search_view(coll_name, type_name, page):
+    coll = server.collection(coll_name)
+    if type_name != '':
+        target = coll.doc_type(type_name)
+        desc = "Documents of type '%s'" % type_name
+    else:
+        target = coll
+        desc = ''
+    args = request.args
+    q = None
+
+    field_exists = args.getlist('field_exists')
+    if field_exists:
+        qs = restpose.Or(*[restpose.Field(f).exists() for f in field_exists])
+        for num, f in enumerate(field_exists):
+            if num == 0:
+                desc += " where field '%s' exists" % f
+            else:
+                desc += " or field '%s' exists" % f
+    if q is None:
+        docs = target.all()
+    else:
+        docs = target.find(q)
+    return search.do_search(coll, docs, desc, page)
 
 @app.route('/coll/<coll_name>/taxonomy/<taxonomy_name>')
 def taxonomy_view(coll_name, taxonomy_name):
