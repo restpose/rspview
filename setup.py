@@ -4,7 +4,7 @@ except ImportError:
     from distutils.core import setup, find_packages
 import rspview
 
-setup(name="RestPoseView",
+setup(name="rspview",
       version=rspview.__version__,
       packages=find_packages(),
       include_package_data=True,
